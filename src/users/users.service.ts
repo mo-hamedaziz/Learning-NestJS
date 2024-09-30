@@ -56,16 +56,16 @@ export class UsersService {
         return { id, ...newUser };
     }   
 
-    updateUser(id: string, updatedUser: {name?: string, email?: string, role?: 'INTERN' | 'ENGINEER' | 'ADMIN'}) {
+    updateUser(id: number, updatedUser: {name?: string, email?: string, role?: 'INTERN' | 'ENGINEER' | 'ADMIN'}) {
         this.users = this.users.map(user => {
-            if (user.id === +id) {
+            if (user.id === id) {
                 return { ...user, ...updatedUser };
             }
 
             return user;
         });
 
-        return this.users.find(user => user.id === +id);
+        return this.users.find(user => user.id === id);
     }
 
     deleteUser(id: number) {

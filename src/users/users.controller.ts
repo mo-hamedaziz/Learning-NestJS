@@ -1,30 +1,39 @@
 /* eslint-disable prettier/prettier */
-import { Body, Controller, Delete, Get, Param, Patch, Post } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Patch, Post, Query } from '@nestjs/common';
+import { UsersService } from './users.service';
 
 @Controller('users')
 export class UsersController {
-    @Get() // GET /users
-    findAllUsers() {
-        return [];
+
+    constructor(private readonly usersService: UsersService) {}
+
+    @Get() // GET /users or /users?role=intern
+    findAllUsers(@Query('role') role?: 'INTERN' | 'ENGINEER' | 'ADMIN') {
+        
+        return this.usersService.findAllUsers(role);
     }
 
     @Get(':id') // GET /users/:id
     findOneUser(@Param('id') id: string) {
-        return { id };
+        
+        return this.usersService.findOneUser(+id);
     }
 
     @Post() // POST /users
-    createUser(@Body() newUser: any) {
-        return newUser;
+    createUser(@Body() newUser: {name: string, email: string, role: 'INTERN' | 'ENGINEER' | 'ADMIN'}) {
+        
+        return this.usersService.createUser(newUser);
     }
 
     @Patch(':id') // PATCH /users/:id
-    updateUser(@Param('id') id: string, @Body() updatedUser: any) {
-        return { id, ...updatedUser };
+    updateUser(@Param('id') id: string, @Body() updatedUser: {name?: string, email?: string, role?: 'INTERN' | 'ENGINEER' | 'ADMIN'}) {
+        
+        return this.usersService.updateUser(+id, updatedUser);
     }
 
     @Delete(':id') // DELETE /users/:id
     deleteUser(@Param('id') id: string) {
-        return { id };
+        
+        return this.usersService.deleteUser(+id);
     }
 }
