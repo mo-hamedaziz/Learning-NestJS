@@ -1,5 +1,7 @@
 /* eslint-disable prettier/prettier */
 import { Injectable } from '@nestjs/common';
+import { CreateUserDto } from './dto/create-user.dto';
+import { UpdateUserDto } from './dto/update-user.dto';
 
 @Injectable()
 export class UsersService {
@@ -50,13 +52,13 @@ export class UsersService {
         return user ? user : { message: 'User not found' };
     }  
 
-    createUser(newUser: {name: string, email: string, role: 'INTERN' | 'ENGINEER' | 'ADMIN'}) {
+    createUser(newUser: CreateUserDto) {
         const id = this.users.length + 1;
         this.users.push({ id, ...newUser });
         return { id, ...newUser };
     }   
 
-    updateUser(id: number, updatedUser: {name?: string, email?: string, role?: 'INTERN' | 'ENGINEER' | 'ADMIN'}) {
+    updateUser(id: number, updatedUser: UpdateUserDto) {
         this.users = this.users.map(user => {
             if (user.id === id) {
                 return { ...user, ...updatedUser };
